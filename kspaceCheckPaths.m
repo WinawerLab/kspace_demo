@@ -5,6 +5,6 @@ function kspaceCheckPaths
 % function has no inputs or outputs. It modifies the current paths.
 
 if ~exist('kspaceParamsGUI.m', 'file'), 
-    pth = fileparts(mfilename);
+    pth = fileparts(which(mfilename));
     addpath(fullfile(pth, 'kspaceFunctions')); 
 end

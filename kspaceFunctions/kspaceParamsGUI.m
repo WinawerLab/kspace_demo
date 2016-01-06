@@ -92,7 +92,7 @@ dlg(1).fieldName    = 'imfile';
 dlg(end).style      = 'popup';
 dlg(end).string     = 'Name of image file';
 dlg(end).value      = 'axialBrain.jpg';
-dlg(end).list       = {'face.jpg', 'sagittalBrain.jpg', 'axialBrain.jpg', 'axialLucas.jpg', 'other'};
+dlg(end).list       = {'checkerboard.jpg', 'face.jpg', 'sagittalBrain.jpg', 'axialBrain.jpg', 'axialLucas.jpg', 'other'};
 if ~isempty(params), dlg(end).value = params.imfile; end
 
 % showProgress
@@ -120,7 +120,7 @@ if ~isempty(params), dlg(end).value = params.sequenceType; end
 % noiseType
 dlg(end+1).style    = 'popup';
 dlg(end).string     = 'B0 noise';
-dlg(end).list       = {'local offset', 'random offset', 'random lowpass', 'dc offset', 'map', 'none'};
+dlg(end).list       = {'local offset', 'random offset', 'random lowpass', 'x gradient', 'y gradient', 'dc offset', 'map', 'none'};
 dlg(end).value      = 'local offset';
 dlg(end).fieldName  = 'noiseType';
 if ~isempty(params), dlg(end).value = params.noiseType; end

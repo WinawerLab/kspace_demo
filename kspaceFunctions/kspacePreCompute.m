@@ -4,6 +4,9 @@ function spins = kspacePreCompute(params, gradients, xygrid, b0noise)
 spins = [];
 t     = 0;
 
+% % store the spins at all time points so we can make a compressed movie
+% spins.saved = zeros([size(xygrid.x) length(gradients.T)], 'uint8');
+
 % Calculate the effect of the echo time
 spins  = kspaceComputeOnePoint(params, gradients, xygrid, b0noise, spins, t);
 
@@ -24,5 +27,6 @@ for ii = 1:length(b)
     spins.precompute(:,:,ii) = tmpspins.step;
 end
 spins.precomputeIndex = n;
+
 
 end

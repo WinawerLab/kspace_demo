@@ -27,6 +27,13 @@ switch lower(noiseType)
         b0noise  = b0noise / max(b0noise(:));
     case {'dc offset' 'constant' 'uniform'}
         b0noise = ones(freq);
+    case 'x gradient'
+        b0noise = x / max(x(:));
+        b0noise = b0noise - mean(b0noise(:));
+    case 'y gradient'
+        b0noise = y / max(y(:));
+        b0noise = b0noise - mean(b0noise(:));
+        
     case {'local' 'local offset'}
         noiseCenter = [.25 .25]*sz; % todo: make this a variable
         noiseRadius = .01 * sz;

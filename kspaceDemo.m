@@ -62,7 +62,7 @@ for t = 1:T
     spins  = kspaceComputeOnePoint(params, gradients, xygrid, b0noise, spins, t);
     
     % update the spin phase to account for the most recent step
-    spins  = kspaceGetCurrentBasisFunctions(spins);
+    spins  = kspaceGetCurrentBasisFunctions(spins);    
     
     % get signal for this time point (fill 1 point in kspace)
     kspace = kspaceGetCurrentSignal(kspace, t, im, spins, params);

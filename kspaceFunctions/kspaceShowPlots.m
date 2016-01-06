@@ -8,7 +8,7 @@ function [kspace, M] = kspaceShowPlots(f, spins, gradients,...
 if t < length(kspace.vector.x) && params.showProgress == false
     return;
 end
-
+4
 % Otherwise recon and plot!
 kspace = kspaceRecon(kspace, params);
 
@@ -23,9 +23,10 @@ rows = 3; cols = 2; n = 1;
 
 % Check to see if this is the first time we are plotting this recon. If so,
 % we will need to set up the plots. If not, we can skip some steps.
-userData = get(f, 'UserData');
+userData  = get(f, 'UserData');
 if isfield(userData, 'initialized') && t > 1
     initialize = false;
+    subplot_handle = userData.subplot_handle;
 else
     initialize = true;
     userData.initialized = true;
@@ -37,7 +38,6 @@ figure(f)
 %-----------------------------------
 % Plot 1: kspace filled by imaging
 %-----------------------------------
-subplot(rows,cols,n);n= n+1;
 tmp = fftshift(log(abs((kspace.grid.real + 1i*kspace.grid.imag))));
 x = fftshift(kspace.grid.x);
 y = fftshift(kspace.grid.y);
@@ -46,6 +46,7 @@ mi = min([tmp(isfinite(tmp)); 0]);
 if ma <= mi, ma = 1; mi = 0; end
 set(gca, 'CLim', [mi ma]);
 if initialize,
+    subplot_handle(n) = subplot(rows,cols,n);
     cla
     axis image;
     imagesc(x(:), y(:), tmp);
@@ -53,17 +54,19 @@ if initialize,
     xlabel('cycles per meter'); ylabel('cycles per meter')
     hold on;
 else
+    axes(subplot_handle(n));
     imagesc(x(:), y(:), tmp);
 end
-    
+n= n+1;
+
 %-----------------------------------
 % Plot 2: image reconned from kspace
 %-----------------------------------
-subplot(rows,cols,n);n= n+1;
 
 recon = abs(ifft2(kspace.grid.real + 1i*kspace.grid.imag));
 imsize = [0 params.imSize*100];
 if initialize,
+    subplot_handle(n) = subplot(rows,cols,n);
     cla
     imagesc(imsize, imsize, recon);
     axis image;
@@ -78,28 +81,31 @@ if initialize,
     set(gca,'Ycolor',[1 1 1]);
     hold on;
 else
+    axes(subplot_handle(n));
     imagesc(imsize, imsize, recon);
 end
-
+n= n+1;
 %-----------------------------------
 % Plot 3: kspace computed from image
 %-----------------------------------
-subplot(rows,cols,n);n= n+1;
 
-imagesc(x(:), y(:), im.fftshift);
 if initialize,
+    subplot_handle(n) = subplot(rows,cols,n);
     cla
     imagesc(x(:), y(:), im.fftshift);
     axis image;
     title('kspace computed from image')
     xlabel('cycles per meter'); ylabel('cycles per meter')
     hold on;
-end
+  
+end 
+n= n+1;
+
 %-----------------------------------
 % Plot 4: Original Image
 %-----------------------------------1
-subplot(rows,cols,n);n= n+1;
 if initialize,
+    subplot_handle(n) = subplot(rows,cols,n);
     cla
     imagesc(imsize, imsize, im.orig);
     axis image;
@@ -112,10 +118,9 @@ if initialize,
     set(gca,'Xcolor',[1 1 1]);
     set(gca,'Ycolor',[1 1 1]);
     hold on;
-else
-    imagesc(imsize, imsize, im.orig);
-end
 
+end
+n= n+1;
 
 % ********************************
 % Gradients & Spins
@@ -124,20 +129,26 @@ end
 %-----------------------------------
 % Plot 5: Sinusoidal spin channel
 %-----------------------------------
-subplot(rows,cols,n);n= n+1;
-imagesc(real(spins.total));
+
 if initialize, 
+    subplot_handle(n) = subplot(rows,cols,n);
     cla
-    axis image off; hold on; 
-    title(sprintf('REAL: x=%2.1f cpm, y=%2.1f cpm', kspace.vector.x(t), kspace.vector.y(t)));
+    imagesc(real(spins.total));    
+    axis image off; hold on;     
+else
+    axes(subplot_handle(n));
+    imagesc(real(spins.total));    
 end
+title(sprintf('REAL: x=%2.1f cpm, y=%2.1f cpm', kspace.vector.x(t), kspace.vector.y(t)));
+n= n+1;
 
 % ********************************
 % B0 Map
 % ********************************
-subplot(rows,cols,n);
 
 if initialize,
+    subplot_handle(n) = subplot(rows,cols,n);
+
     cla
     imagesc(imsize, imsize, b0noise)
     axis image;
@@ -152,45 +163,65 @@ if initialize,
     set(gca,'Xcolor',[1 1 1]);
     set(gca,'Ycolor',[1 1 1]);
     hold on;
-else
-    imagesc(imsize, imsize, b0noise)
+
+end
+n= n+1;
+
+
+if initialize
+    userData.subplot_handle = subplot_handle;
+    set(f, 'UserData', userData);    
 end
 
 drawnow;
+
 %%
 figure(f+1)
-% %-----------------------------------
-% % Plot 6: Cosinusoidal spin channel
-% %-----------------------------------
-% subplot(2,1,1)
-% imagesc(imag(spins.total));
-% if initialize, axis image off; hold on; end
-% title(sprintf('IMAGINARY: x=%2.1f cpm, y=%2.1f cpm', kspace.vector.x(t), kspace.vector.y(t)));
+
+userData  = get(f+1, 'UserData');
+if ~initialize
+    subplot_handle = userData.subplot_handle;
+end
 
 %-----------------------------------
 % Gradients
 %-----------------------------------
-subplot(2,1,1)
 if initialize,
+    subplot_handle(1) = subplot(2,1,1);
     cla
     axis tight ; 
     ylim([-1.1 1.1]*max(gradients.x));
     xlim([0 sum(gradients.T)]);
     title('Gradients');
     hold on;
+    plot([0 cumsum(gradients.T(1:t))], [gradients.y(1) gradients.y(1:t)], 'g-', 'LineWidth', 1);
+else
+    axes(subplot_handle(1))
+    plot([0 cumsum(gradients.T(1:t))], [gradients.y(1) gradients.y(1:t)], 'g-', 'LineWidth', 1);
 end
-plot([0 cumsum(gradients.T(1:t))], [gradients.y(1) gradients.y(1:t)], 'g-', 'LineWidth', 1);
 
 
-subplot(2,1,2)
+
+
 if initialize,
+    subplot_handle(2) = subplot(2,1,2);
     cla
     axis tight ; 
     ylim([-1.1 1.1]*max(gradients.x));
     xlim([0 sum(gradients.T)]);
     title('Gradients');
     hold on
+    plot([0 cumsum(gradients.T(1:t))], [gradients.x(1) gradients.x(1:t)], 'r-', 'LineWidth', 1);
+else
+    axes(subplot_handle(2))
+    plot([0 cumsum(gradients.T(1:t))], [gradients.x(1) gradients.x(1:t)], 'r-', 'LineWidth', 1);
 end
-plot([0 cumsum(gradients.T(1:t))], [gradients.x(1) gradients.x(1:t)], 'r-', 'LineWidth', 1);
+
+if initialize
+    userData.subplot_handle = subplot_handle;
+    set(f+1, 'UserData', userData);    
+end
+
+
 
 end
