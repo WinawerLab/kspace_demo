@@ -150,9 +150,10 @@ if initialize
     cla
     imagesc(imsize, imsize, b0noise)
     axis image;
-    set(gca, 'CLim', [min(b0noise(:)) max(b0noise(:))])
-    noiseMin = min(b0noise(:)) * params.gamma / (2 * pi);
-    noiseMax = max(b0noise(:)) * params.gamma / (2 * pi);
+    rg = [-1 1] * max(abs(b0noise(:))); if all(rg==0), rg = [-1 1]*eps; end
+    set(gca, 'CLim', rg)
+    noiseMin = rg(1) * params.gamma / (2 * pi);
+    noiseMax = rg(1) * params.gamma / (2 * pi);
     title(sprintf('B0 map. Range = [%2.1f %2.1f] Hz', noiseMin, noiseMax))
     xlabel('mm'); ylabel('mm')
     grid on
