@@ -1,4 +1,8 @@
-function [params ok] = kspaceParamsGUI(params)
+function [params, ok] = kspaceParamsGUI(params)
+% Create Graphical User Interface for kspace demo
+%   [params, ok] = kspaceParamsGUI(params)
+%
+% This should be remade in GUIDE
 
 % ********************
 %   User defined
@@ -82,7 +86,7 @@ epishift     = 126 / bandwidth.ph; %#ok<NASGU> % epi shift in phase encoded dire
 return
 
 
-function [params ok] = kspaceUserDefinedParams(params)
+function [params, ok] = kspaceUserDefinedParams(params)
 
 if ~exist('generalDialog.m', 'file'), addpath('mrVistaUtilities'); end
     
@@ -160,14 +164,8 @@ dlg(end).string     = 'Pixel Size, original image, mm';
 dlg(end).value      = 1;
 if ~isempty(params), dlg(end).value = params.imRes * 10^3; end
 
-% dt (dwell time) is now computed based on pixel bandwidth, and so cannot
-% be set directly by the user.
-% % dt
-% dlg(end+1).style    = 'number';
-% dlg(end).fieldName  = 'dt';
-% dlg(end).string     = 'Dwell time (per kspace sample, microseconds)';
-% dlg(end).value      =  7;
-% if ~isempty(params), dlg(end).value = params.dt * 10^6; end
+% dt (dwell time, in microseconds) is now computed based on pixel
+% bandwidth, and so cannot be set directly by the user.
 
 % pixel bandwith (Hz)
 dlg(end+1).style    = 'number';
@@ -195,6 +193,6 @@ if ~isempty(params), dlg(end).value = params.oversample; end
 
 
 pos = [1 1 .25 .5];
-[params ok] = generalDialog(dlg, mfilename, pos);
+[params, ok] = generalDialog(dlg, mfilename, pos);
 
 return

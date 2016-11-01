@@ -8,7 +8,7 @@ function [kspace, M] = kspaceShowPlots(f, spins, gradients,...
 if t < length(kspace.vector.x) && params.showProgress == false
     return;
 end
-4
+
 % Otherwise recon and plot!
 kspace = kspaceRecon(kspace, params);
 
@@ -18,7 +18,6 @@ kspace = kspaceRecon(kspace, params);
 
 % set up plots and subplots
 rows = 3; cols = 2; n = 1;
-%rows = 5; cols = 2; n = 1;
 
 
 % Check to see if this is the first time we are plotting this recon. If so,
@@ -45,7 +44,7 @@ ma = max([tmp(isfinite(tmp)); 0]);
 mi = min([tmp(isfinite(tmp)); 0]);
 if ma <= mi, ma = 1; mi = 0; end
 set(gca, 'CLim', [mi ma]);
-if initialize,
+if initialize
     subplot_handle(n) = subplot(rows,cols,n);
     cla
     axis image;
@@ -65,7 +64,7 @@ n= n+1;
 
 recon = abs(ifft2(kspace.grid.real + 1i*kspace.grid.imag));
 imsize = [0 params.imSize*100];
-if initialize,
+if initialize
     subplot_handle(n) = subplot(rows,cols,n);
     cla
     imagesc(imsize, imsize, recon);
@@ -85,11 +84,11 @@ else
     imagesc(imsize, imsize, recon);
 end
 n= n+1;
+
 %-----------------------------------
 % Plot 3: kspace computed from image
 %-----------------------------------
-
-if initialize,
+if initialize
     subplot_handle(n) = subplot(rows,cols,n);
     cla
     imagesc(x(:), y(:), im.fftshift);
@@ -104,7 +103,7 @@ n= n+1;
 %-----------------------------------
 % Plot 4: Original Image
 %-----------------------------------1
-if initialize,
+if initialize
     subplot_handle(n) = subplot(rows,cols,n);
     cla
     imagesc(imsize, imsize, im.orig);
@@ -118,7 +117,6 @@ if initialize,
     set(gca,'Xcolor',[1 1 1]);
     set(gca,'Ycolor',[1 1 1]);
     hold on;
-
 end
 n= n+1;
 
@@ -130,7 +128,7 @@ n= n+1;
 % Plot 5: Sinusoidal spin channel
 %-----------------------------------
 
-if initialize, 
+if initialize
     subplot_handle(n) = subplot(rows,cols,n);
     cla
     imagesc(real(spins.total));    
@@ -146,12 +144,13 @@ n= n+1;
 % B0 Map
 % ********************************
 
-if initialize,
+if initialize
     subplot_handle(n) = subplot(rows,cols,n);
 
     cla
     imagesc(imsize, imsize, b0noise)
     axis image;
+    set(gca, 'CLim', [min(b0noise(:)) max(b0noise(:))])
     noiseMin = min(b0noise(:)) * params.gamma / (2 * pi);
     noiseMax = max(b0noise(:)) * params.gamma / (2 * pi);
     title(sprintf('B0 map. Range = [%2.1f %2.1f] Hz', noiseMin, noiseMax))
@@ -186,7 +185,7 @@ end
 %-----------------------------------
 % Gradients
 %-----------------------------------
-if initialize,
+if initialize
     subplot_handle(1) = subplot(2,1,1);
     cla
     axis tight ; 
