@@ -1,15 +1,23 @@
 function  kspace = kspaceGetCurrentSignal(kspace, t, im, spins, params)
+%
 %  kspace = kspaceGetCurrentSignal(kspace, t, imv, spins, params)
+%
+% Description
+%
+%  The variables s.r and s.i are the 'real' (s.r) or sinusoidal basis
+%  matrix and the 'imaginary' (s.i) or cosinudoidal basis matrix. When we
+%  multiply these basis matrices with the image, we get the kspace
+%  measurement. So kspace.vals.real is the 'real' or sinusoidal recording
+%  channel and kspace.vals.imag is the 'imaginary' or cosinusoidal
+%  recording channel.
+%
+%  In the early days of MRI, there were  two antennae in the coils, one for
+%  the imaginary and one for the real components. Now the signal is
+%  digitized at a very high rate and the real and imaginary components are
+%  computed one high rate channel.
+%
+% Winawer, Vistasoft, 2009
 
-% We can think of s.r as our 'real' or sinusoidal basis matrix and s.i as
-% our 'imaginary' or cosinudoidal basis matrix. When we multiply these
-% basis matrices with the image, we get the kspace measurement. So
-% ksapce.vals.real is our 'real' or sinusoidal recording channel and
-% kspace.vals.imag is our 'imaginary' or cosinusoidal recording channel.
-% Apparently, in the early days of MRI, there were in fact two antennae in
-% the coils, one for the imaginary and one for the real componennts. Now
-% the signal is digitized at a very high rate and the real and imaginary
-% components can be extracted later from the one high rate channel.
 
 dx  = params.imRes;
 dy  = params.imRes;

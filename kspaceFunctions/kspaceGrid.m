@@ -1,13 +1,24 @@
 function xygrid = kspaceGrid(k)
-% Create a grid of x,y values (in meters) to represent voxel positions.
-% This grid will have the resolution of our oringinal image, not
-% necessarily the resolution of our reconned image. This is because if we
-% are doing non-cartesian imaging (e.g., spiral), we will want to sample the
-% non-cartesian points in k-space at a high resolution to reduce sampling
-% artifacts.
+% Returns  x,y (meters) grid  representing voxel positions
 %
-%  xygrid = kspaceGrid(k)
+%  thisGrid = kspaceGrid(k)
 %
+% Description
+%   Create a grid of x,y values (in meters) to represent voxel positions.
+%   This grid will have the resolution of our oringinal image, not
+%   necessarily the resolution of our reconned image. This is because if we
+%   are doing non-Cartesian imaging (e.g., spiral), we will want to sample
+%   the non-Cartesian points in k-space at a high resolution to reduce
+%   sampling artifacts.
+%
+% Input
+%   k - space structure
+%
+% Output
+%   xygrid.x
+%   xygrid.y
+%
+% Winawer, Vistasoft 2009s
 
 sz      = k.imSize; % width of image in meters
 dx      = k.imRes;  % width of one pixel in meters
@@ -21,4 +32,4 @@ yfreq   = k.imFreq;  % pixels are assumed to square. this could change.
 xygrid.x = x;
 xygrid.y = y;
 
-return
+end

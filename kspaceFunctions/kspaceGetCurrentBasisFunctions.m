@@ -3,7 +3,7 @@ function spins = kspaceGetCurrentBasisFunctions(spins)
  %
  % spins = kspaceGetCurrentBasisFunctions(spins)
 
-if ~isfield(spins, 'total'), 
+if ~isfield(spins, 'total') 
     % if this is the first data acquisition
     spins.total = spins.step;
 else

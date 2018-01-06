@@ -1,22 +1,28 @@
 function [params, im, kspace, spins, gradients] = kspaceDemo(params)
+% A demonstration of MRI imaging principles and artifacts
 %
-%  A simple demonstration of Fourier imaging. 
 %   Written by Jonathan Winawer. 
 %   Copyright 12.08.2009.
 %
-% Call kspaceDemo from the Matlab prompt to laucnh the GUI. Then go.
-% Sample images ('face.jpg' and 'brain.jpg') downloaded from Google Image
-% search.
+% To run, simply run kspaceDemo from the Matlab prompt. This will launch
+% the GUI. Then go. Sample images ('face.jpg' and 'brain.jpg') downloaded
+% from Google Image search.
 %
-% Please feel free to improve this demo if you know how to do so. -JW
-%
-% Some ideas for improvement: 
+% params - a struct with these fields
+%   
+% Notes:
+%  Some ideas for improvement: 
 %       - Proper gridding for spiral reconstruction 
 %       - Real signal equations (e.g., gradient echo or spin echo
 %           equations, with options for T1, T2, T2*, and proton density
 %           maps as inputs, instead of just images)
 %       - Allow arbitary field map as noise option
-%       - Nicer GUI      
+%       - Nicer GUI
+%
+% Please feel free to improve this demo if you know how to do so. -JW
+%
+% Winawer, Vistasoft, 2009
+
 
 % Check paths
 kspaceCheckPaths;

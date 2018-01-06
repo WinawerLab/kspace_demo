@@ -1,10 +1,14 @@
 function im = kspaceGetImage(k)
+%
+%
+%
+% JW, Vistasoft, 2009
 
 imfile = k.imfile;
 sz     = k.imFreq; % this is the number of pixels along one side of the image (assumed to be square)
 
 % if not a default image, let user select it from prompt
-if strcmpi(imfile, 'other');
+if strcmpi(imfile, 'other')
     while ~exist('fname', 'var') || isequal(fname,0) %#ok<NODEF>
         [fname,pth] = uigetfile('*.*', 'Pick any image');
     end
@@ -30,3 +34,5 @@ im.fft      = fft2(im.orig);
 % this is a nice way to view the fft of the image. calculate it once now
 % so we don't have to do it again.
 im.fftshift = fftshift(log(abs(im.fft)));
+
+end

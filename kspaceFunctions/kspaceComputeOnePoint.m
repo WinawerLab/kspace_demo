@@ -1,8 +1,19 @@
 function spins = kspaceComputeOnePoint(params, gradients, xygrid, b0noise, spins, t)
-% Calculate the spin phase at each discrete location in the image
-%       due to the gradients and b0 inhomogeneities
+% Calculate the spin phase at each discrete image location 
+%       from the gradients and b0 inhomogeneities
 %
-% step = kspaceComputeOnePoint(params, GX, GY, T);
+% Syntax
+%   step = kspaceComputeOnePoint(params, GX, GY, T);
+%
+% Description
+%
+% Inputs
+%
+% Outputs
+%
+% Winawer, Vistasoft, 2009
+%
+% See also
 
 % Check to see whether we pre-computed the spin state. If so, grab it and
 % move on.
@@ -27,7 +38,7 @@ x     = xygrid.x;       % spatial locations in image in meters,
 y     = xygrid.y;       % starting from 0,0 (upper left)
 
 % gradients (these change over time)
-if t == 0, % then this is the effect of waiting TE (echo time), which means
+if t == 0  % then this is the effect of waiting TE (echo time), which means
     % the gradients have not yet been on, and the only effect we
     % should see is depahsing due to B0 noise, if any
     GX = 0;
@@ -61,4 +72,4 @@ spins.step = step;
 %       step = step.x .* step.y .* step.e .* exp(-1i*gamma * B0 * dt * T)
 % But we drop this term due to demodulation at aquisition. (Lauterber book)
 
-return
+end
