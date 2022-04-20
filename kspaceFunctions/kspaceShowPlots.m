@@ -46,9 +46,9 @@ if ma <= mi, ma = 1; mi = 0; end
 set(gca, 'CLim', [mi ma]);
 if initialize
     subplot_handle(n) = subplot(rows,cols,n);
-    cla
-    axis image;
+    cla    
     imagesc(x(:), y(:), tmp);
+    axis image;
     title('kspace filled by imaging')
     xlabel('cycles per meter'); ylabel('cycles per meter')
     hold on;
@@ -203,7 +203,7 @@ end
 
 
 
-if initialize,
+if initialize
     subplot_handle(2) = subplot(2,1,2);
     cla
     axis tight ; 
